@@ -6,7 +6,7 @@
   "scripts": {
     "compile": "node compile.js",
     "test": "npm run compile && electron .",
-    "run": "electron .",
+    "start": "electron .",
     "build": "npm run build:minify && npm run build:electron && npm run build:after",
     "build:electron": "npm run build:electron_win && npm run build:electron_linux && npm run build:electron_darwin",
     "build:electron_win": "electron-packager ./distApp --ignore=\"(distApp|builds|\\.ts|\\.so\\.4)\" --arch=ia32 --win32metadata.ProductName=\"Lightcord\" --win32metadata.CompanyName=\"Lightcord\" --protocol=discord --platform=\"win32\" --out=builds --icon=app.ico --executable-name=\"Lightcord\" --asar.unpack='*.{node,dll}' --overwrite",

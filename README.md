@@ -40,7 +40,7 @@ Lightcord will launch next. You can see you have done it right by looking at the
 <br />
 Then everytime you want to launch it just type in
 ```sh
-npm run run
+npm start
 ```
 
 *You can find an experimental linux tutorial in our Discord, or use the AUR*
