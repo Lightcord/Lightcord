@@ -45,7 +45,7 @@
     "y18n": "3.2.1",
     "yallist": "2.1.2",
     "yargs": "11.0.0",
-    "yargs-parser": "9.0.2",
+    "yargs-parser": "13.1.2",
     "wrap-ansi": "2.1.0",
     "which-module": "2.0.0",
     "ansi-regex": "2.1.1"
