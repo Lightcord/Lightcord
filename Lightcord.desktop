@@ -2,7 +2,7 @@
 Name=Lightcord
 Comment[fr_FR]=Un client Discord simple et personalisable
 Comment=A simple - customizable - Discord Client
-Exec=/opt/lightcord/Lightcord
+Exec=/opt/Lightcord/Lightcord
 Icon=lightcord
 Terminal=false
 Type=Application
