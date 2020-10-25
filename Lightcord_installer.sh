@@ -1,5 +1,6 @@
 #!/bin/bash
 # Original script by https://github.com/GermanBread
+
 if [[ $TERM == dumb ]]; then
     exit;
 fi
@@ -10,6 +11,7 @@ if [[ $(whoami) != "root" ]] ; then
 fi
 
 
+tput setaf 208
 cat << "EOF"
   _    _      _   _                 _
  | |  (_)__ _| |_| |_ __ ___ _ _ __| |
@@ -19,6 +21,7 @@ cat << "EOF"
     Linux Installer and Updater
     
 EOF
+tput sgr0
 
 printf "[$(tput setaf 12 && tput blink)INFO$(tput sgr0)] $(tput setaf 12)This script depends on unzip! Install that package first!$(tput sgr0)\n";
 
@@ -49,6 +52,7 @@ case $selection in
     1)
     printf "[$(tput setaf 12 && tput blink)INFO$(tput sgr0)] $(tput setaf 12)Installing Lightcord$(tput sgr0)\n";
     printf "[$(tput setaf 12 && tput blink)INFO$(tput sgr0)] $(tput setaf 7)Downloading Lightcord zip to $(pwd && tput sgr0)\n";
+    rm -rf Lightcord;
     wget https://lightcord.org/api/v1/gh/releases/Lightcord/Lightcord/dev/lightcord-linux-x64.zip; 
     printf "[$(tput setaf 12 && tput blink)INFO$(tput sgr0)] $(tput setaf 7)Unzipping$(tput sgr0)\n";
     unzip lightcord-linux-x64.zip -d Lightcord; 
@@ -77,6 +81,7 @@ case $selection in
     chmod +x /usr/share/applications/Lightcord.desktop;
     printf "[$(tput setaf 12 && tput blink)INFO$(tput sgr0)] $(tput setaf 7)Cleaning up$(tput sgr0)\n";
     rm -rf Lightcord;
+    
     printf "[$(tput setaf 10 && tput blink)FINISH$(tput sgr0)] Installation complete\n";
     ;;
 
@@ -88,8 +93,8 @@ case $selection in
     rm /usr/share/pixmaps/lightcord.svg;
     printf "[$(tput setaf 12 && tput blink)INFO$(tput sgr0)] $(tput setaf 12)Deleting /usr/share/Lightcord.desktop$(tput sgr0)\n";
     rm /usr/share/applications/Lightcord.desktop;
-    #printf "[$(tput setaf 12 && tput blink)INFO$(tput sgr0)] $(tput setaf 12)Deleting /home/*/.local/share/applications/Lightcord.desktop$(tput sgr0)\n";
-    #rm /home/*/.local/share/applications/Lightcord.desktop;
+    printf "[$(tput setaf 12 && tput blink)INFO$(tput sgr0)] $(tput setaf 12)Deleting /home/*/.local/share/applications/Lightcord.desktop$(tput sgr0)\n";
+    rm -f /home/*/.local/share/applications/Lightcord.desktop;
     printf "[$(tput setaf 10 && tput blink)FINISH$(tput sgr0)] Uninstall complete\n";
     ;;
 
@@ -100,6 +105,7 @@ case $selection in
     rm -r /opt/Lightcord;
     #Install
     printf "[$(tput setaf 12 && tput blink)INFO$(tput sgr0)] $(tput setaf 7)Downloading Lightcord zip to $(pwd && tput sgr0)\n";
+    rm -rf Lightcord;
     wget https://lightcord.org/api/v1/gh/releases/Lightcord/Lightcord/dev/lightcord-linux-x64.zip; 
     printf "[$(tput setaf 12 && tput blink)INFO$(tput sgr0)] $(tput setaf 7)Unzipping$(tput sgr0)\n";
     unzip lightcord-linux-x64.zip -d Lightcord; 
@@ -122,10 +128,44 @@ case $selection in
     ;;
 
     4)
-    printf "[$(tput setaf 12 && tput blink)INFO$(tput sgr0)] $(tput setaf 7)If the Lightcord shortcut doesn't work, modify \"/usr/share/Lightcord.desktop\" and change the line \"Exec=/usr/bin/Lightcord\" to \"Exec=/usr/bin/lightcord\"$(tput sgr0)\n";
+    printf "Please select\n";
+    printf "1: \"/opt/Lightcord/Lightcord not found\"\n";
+    printf "2: None of the above\n"
+    printf "\n";
+    
+    #Repeat only if the user hasn't entered an integer...
+    while ! [[ $troubleshooting_selection =~ ^[0-9]+$ ]]; 
+    do
+        read troubleshooting_selection;
+        #if the entered value was not an integer, show this
+        if ! [[ $troubleshooting_selection =~ ^[0-9]+$ ]]; then
+            sleep 1;
+            printf "$(tput setaf 9)Please try again$(tput sgr0)\n";
+            printf "1: \"/opt/Lightcord/Lightcord not found\"\n";
+            printf "2: None of the above\n"
+            printf "\n";
+        fi
+    done
+    
+    case $troubleshooting_selection in
+        1)
+        printf "[$(tput setaf 12 && tput blink)INFO$(tput sgr0)] $(tput setaf 7)Modifying /usr/share/applications/Lightcord.desktop$(tput sgr0)\n";
+        sed -i 's/Lightcord\/Lightcord/Lightcord\/lightcord/' /usr/share/applications/Lightcord.desktop > /dev/null 2>&1;
+        sed -i 's/Lightcord\/Lightcord/Lightcord\/lightcord/' /home/*/.local/share/applications/Lightcord.desktop > /dev/null 2>&1;
+        printf "[$(tput setaf 10 && tput blink)FINISH$(tput sgr0)] Done\n";
+        ;;
+        
+        2)
+        printf "[$(tput setaf 12 && tput blink)INFO$(tput sgr0)] $(tput setaf 15)Visit the official server for support: https://discord.gg/7eFff2A$(tput sgr0)\n";
+        ;;
+        
+        *)
+        printf "[$(tput setaf 12 && tput blink)INFO$(tput sgr0)] $(tput setaf 12)Exiting troubleshooting$(tput sgr0)\n";
+        ;;
+    esac
     ;;
     
     *)
-    printf "[$(tput setaf 12 && tput blink)INFO$(tput sgr0)] $(tput setaf 12)Exiting$(tput sgr0)\n";
+    printf "[$(tput setaf 12 && tput blink)INFO$(tput sgr0)] $(tput setaf 12)Exiting script$(tput sgr0)\n";
     ;;
 esac
