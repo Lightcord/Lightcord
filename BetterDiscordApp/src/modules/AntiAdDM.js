@@ -43,7 +43,7 @@ export default new class AntiBotDM {
 
         if(channel.type !== 1)return
 
-        if(blocked[ev.message.author.id])return // If the user unblock the bot, Don't block it again.
+        if(blocked[ev.message.author.id])return // If the user unblocks the bot, Don't block it again.
 
         if(scanMessage(ev.message)){
             blocked[ev.message.author.id] = true
@@ -61,7 +61,7 @@ export default new class AntiBotDM {
 }
 
 function scanMessage(message){
-    if(/(discord\.gg|discord\.com\/invite\/|discordapp\.com\/invite\/)/g.test(message.content))return true
+    if(/(discord(?:app\.com|\.(?:com|gg)))/gi.test(message.content))return true
     if(EmbedsContains(message, "discord.gg/") || EmbedsContains(message, "discord.com/invite/") || EmbedsContains(message, "discordapp.com/invite/"))return true
 
     return false
